@@ -27,7 +27,12 @@ public class UserMealRestController {
 
     public List<UserMealWithExceed> getAllByCriteria(LocalDate startDate, LocalTime startTime, LocalDate endDate, LocalTime endTime) {
         LOG.info("getByCriteria");
-        return UserMealsUtil.getFilteredMealsWithExceeded(getAll(), startDate, startTime, endDate, endTime, LoggedUser.getCaloriesPerDay());
+        return UserMealsUtil.getFilteredMealsWithExceeded(getAll(),
+                startDate != null ? startDate : LocalDate.MIN,
+                startTime != null ? startTime : LocalTime.MIN,
+                endDate != null ? endDate : LocalDate.MAX,
+                endTime != null ? endTime : LocalTime.MAX,
+                LoggedUser.getCaloriesPerDay());
     }
 
 

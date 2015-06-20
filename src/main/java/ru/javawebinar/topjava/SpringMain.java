@@ -25,10 +25,11 @@ public class SpringMain {
         try (ConfigurableApplicationContext appCtx = new ClassPathXmlApplicationContext("spring/spring-app.xml")) {
             System.out.println(Arrays.toString(appCtx.getBeanDefinitionNames()));
             AdminUserRestController adminUserController = appCtx.getBean(AdminUserRestController.class);
-            User user = new User(1, "userName", "email", "password", Role.ROLE_ADMIN);
+            User user = new User(1, "userName", "email", "password", 2000, Role.ROLE_ADMIN);
             System.out.println(adminUserController.create(user));
 
 
+            LoggedUser.setUser(user);
             UserMealRestController userMealRestController = appCtx.getBean(UserMealRestController.class);
             UserMeal userMeal = new UserMeal(1, LocalDateTime.of(2015, Month.MAY, 30, 10, 0), "Завтрак", 500, user);
             System.out.println(userMealRestController.create(userMeal));

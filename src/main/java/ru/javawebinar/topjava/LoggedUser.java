@@ -1,6 +1,5 @@
 package ru.javawebinar.topjava;
 
-import ru.javawebinar.topjava.model.Role;
 import ru.javawebinar.topjava.model.User;
 
 /**
@@ -9,17 +8,21 @@ import ru.javawebinar.topjava.model.User;
  */
 public class LoggedUser {
 
-    private static User user =  new User(1, "userName", "email", "password", Role.ROLE_ADMIN);
+    private static User user;
 
     public static int id() {
-        return 1;
+        return user.getId();
     }
 
     public static int getCaloriesPerDay() {
-        return 2000;
+        return user.getCalories();
     }
 
     public static User getUser() {
         return user;
+    }
+
+    public static void setUser(User user) {
+        LoggedUser.user = user;
     }
 }

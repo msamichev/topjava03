@@ -23,7 +23,7 @@ public class UserMealsUtil {
     public static void main(String[] args) {
 
 
-        User user = new User(LoggedUser.id(), "User", "no@no.com", "", Role.ROLE_USER, null);
+        User user = new User(LoggedUser.id(), "User", "no@no.com", "", 2000, Role.ROLE_USER, null);
 
 
         List<UserMeal> mealList = Arrays.asList(
