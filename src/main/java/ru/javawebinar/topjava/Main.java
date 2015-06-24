@@ -27,4 +27,10 @@ public class Main {
         consumer.accept(out);
         System.out.println("End consume");
     }
+
+    public static void test(String[] args) {
+        System
+                .out.println("sssss");
+    }
+
 }
