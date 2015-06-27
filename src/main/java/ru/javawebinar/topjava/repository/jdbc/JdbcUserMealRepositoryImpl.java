@@ -1,6 +1,7 @@
 package ru.javawebinar.topjava.repository.jdbc;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -74,9 +75,21 @@ public class JdbcUserMealRepositoryImpl implements UserMealRepository {
 
     @Override
     public UserMeal get(int id, int userId) {
-        return jdbcTemplate.queryForObject(
-                "SELECT id, description, calories, dateTime FROM meals WHERE id=? and user_id=?",
+        List<UserMeal> results = jdbcTemplate.query("SELECT id, description, calories, dateTime FROM meals WHERE id=? AND user_id=?",
                 ROW_MAPPER, id, userId);
+
+        int size = results != null ? results.size() : 0;
+        if (size == 0) {
+            return null;
+        } else if (results.size() > 1) {
+            throw new IncorrectResultSizeDataAccessException(1, size);
+        } else {
+            return results.iterator().next();
+        }
+
+        /*return jdbcTemplate.queryForObject(
+                "SELECT id, description, calories, dateTime FROM meals WHERE id=? and user_id=?",
+                ROW_MAPPER, id, userId);*/
 
     }
 

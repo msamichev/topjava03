@@ -59,7 +59,7 @@ public class UserMealServiceTest {
         MATCHER.assertEquals(MealTestData.USER_MEAL1, userMeal);
     }
 
-    @Test(expected = EmptyResultDataAccessException.class)
+    @Test(expected = NotFoundException.class)
     public void testNotFoundGet() throws Exception {
         UserMeal userMeal = service.get(MealTestData.USER_MEAL1.getId(), UserTestData.ADMIN.getId());
 
