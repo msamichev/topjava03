@@ -5,13 +5,14 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import ru.javawebinar.topjava.MealTestData;
 import ru.javawebinar.topjava.UserTestData;
-import ru.javawebinar.topjava.model.BaseEntity;
 import ru.javawebinar.topjava.model.UserMeal;
 import ru.javawebinar.topjava.util.DbPopulator;
+import ru.javawebinar.topjava.util.exception.NotFoundException;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -58,6 +59,12 @@ public class UserMealServiceTest {
         MATCHER.assertEquals(MealTestData.USER_MEAL1, userMeal);
     }
 
+    @Test(expected = EmptyResultDataAccessException.class)
+    public void testNotFoundGet() throws Exception {
+        UserMeal userMeal = service.get(MealTestData.USER_MEAL1.getId(), UserTestData.ADMIN.getId());
+
+    }
+
     @Test
     public void testDelete() throws Exception {
         service.delete(MealTestData.USER_MEAL1.getId(), UserTestData.USER.getId());
@@ -88,12 +95,18 @@ public class UserMealServiceTest {
 
     @Test
     public void testUpdate() throws Exception {
-
         UserMeal userMeal = service.get(ADMIN_MEAL1.getId(), UserTestData.ADMIN.getId());
         userMeal.setDescription("ADMIN COMMENT");
-        service.update(userMeal,UserTestData.ADMIN.getId());
+        service.update(userMeal, UserTestData.ADMIN.getId());
         MATCHER.assertEquals(userMeal, service.get(ADMIN_MEAL1.getId(), UserTestData.ADMIN.getId()));
 
+    }
+
+    @Test(expected = NotFoundException.class)
+    public void testNotFoundUpdate() throws Exception {
+        UserMeal userMeal = service.get(ADMIN_MEAL1.getId(), UserTestData.ADMIN.getId());
+        userMeal.setDescription("ADMIN COMMENT");
+        service.update(userMeal, UserTestData.USER.getId());
     }
 
 }
