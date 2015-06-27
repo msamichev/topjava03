@@ -13,10 +13,8 @@ VALUES ('Admin', 'admin@gmail.com', 'admin');
 INSERT INTO user_roles (role, user_id) VALUES ('ROLE_USER', 100000);
 INSERT INTO user_roles (role, user_id) VALUES ('ROLE_ADMIN', 100001);
 
-INSERT INTO user_meals (description, calories, user_id) VALUES ('description1', 555, 100000);
-INSERT INTO user_meals (description, calories, user_id) VALUES ('description2', 1000, 100000);
-INSERT INTO user_meals (description, calories, user_id) VALUES ('description3', 200, 100000);
+INSERT INTO user_meals (description, datetime, calories, user_id) VALUES ('description1', '2015-06-25 10:30', 555, 100000);
+INSERT INTO user_meals (description, datetime, calories, user_id) VALUES ('description2', '2015-06-27 19:00', 1000, 100000);
 
-INSERT INTO user_meals (description, calories, user_id) VALUES ('description1', 555, 100001);
-INSERT INTO user_meals (description, calories, user_id) VALUES ('description2', 1000, 100001);
-INSERT INTO user_meals (description, calories, user_id) VALUES ('description3', 200, 100001);
+INSERT INTO user_meals (description, datetime, calories, user_id) VALUES ('description3', '2015-06-26 6:00', 555, 100001);
+INSERT INTO user_meals (description, datetime, calories, user_id) VALUES ('description4', '2015-06-27 15:25', 666, 100001);

@@ -45,6 +45,10 @@ public class UserMeal extends BaseEntity{
         this.user = user;
     }
 
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     @Override
     public String toString() {
         return "Meal(" + id + ", " + dateTime + ", '" + description + "', calories:" + calories + ')';
