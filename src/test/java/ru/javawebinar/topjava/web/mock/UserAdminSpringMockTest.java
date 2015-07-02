@@ -14,7 +14,8 @@ import ru.javawebinar.topjava.web.user.AdminUserRestController;
  * GKislin
  * 13.03.2015.
  */
-@ContextConfiguration({"classpath:spring/spring-app.xml", "classpath:spring/spring-db.xml"})
+@ContextConfiguration({"classpath:spring/spring-app.xml", "classpath:spring/mock.xml"})
+//@ContextConfiguration({"classpath:spring/spring-app.xml", "classpath:spring/spring-db.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class UserAdminSpringMockTest {
 
@@ -26,7 +27,7 @@ public class UserAdminSpringMockTest {
         controller.create(new User(null, "Name", "email@ya.ru", "password", Role.ROLE_USER));
     }
 
-    @Test(expected = NotFoundException.class)
+    @Test
     public void testDelete() throws Exception {
         controller.delete(7);
     }
