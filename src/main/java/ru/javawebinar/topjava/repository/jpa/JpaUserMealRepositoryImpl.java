@@ -1,9 +1,15 @@
 package ru.javawebinar.topjava.repository.jpa;
 
+import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
+import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.model.UserMeal;
 import ru.javawebinar.topjava.repository.UserMealRepository;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -13,35 +19,62 @@ import java.util.List;
  */
 
 @Repository
+@Transactional(readOnly = true)
 public class JpaUserMealRepositoryImpl implements UserMealRepository {
 
+    @PersistenceContext
+    private EntityManager em;
+
     @Override
+    @Transactional
     public UserMeal save(UserMeal userMeal, int userId) {
-        return null;
+        User user = em.find(User.class, userId);
+        if (userMeal.isNew()) {
+            userMeal.setUser(user);
+            em.persist(userMeal);
+        } else {
+            if (Integer.valueOf(userId).equals(userMeal.getUser().getId())) {
+                em.merge(userMeal);
+            } else {
+                return null;
+            }
+        }
+        return userMeal;
     }
 
     @Override
+    @Transactional
     public boolean delete(int id, int userId) {
-        return false;
+        return em.createNamedQuery(UserMeal.DELETE).setParameter("id", id).setParameter("userId", userId).executeUpdate() != 0;
     }
 
     @Override
     public UserMeal get(int id, int userId) {
-        return null;
+
+        List<UserMeal> userMeals = em.createNamedQuery(UserMeal.GET, UserMeal.class).setParameter("id", id).setParameter
+                ("userId",
+                        userId)
+                .getResultList();
+
+        return CollectionUtils.isEmpty(userMeals) ? null : DataAccessUtils.requiredSingleResult(userMeals);
+
     }
 
     @Override
     public List<UserMeal> getAll(int userId) {
-        return null;
+        return em.createNamedQuery(UserMeal.ALL, UserMeal.class).setParameter("userId", userId).getResultList();
     }
 
     @Override
+    @Transactional
     public void deleteAll(int userId) {
-
+        em.createNamedQuery(UserMeal.DELETE_ALL).setParameter("userId", userId).executeUpdate();
     }
 
     @Override
     public List<UserMeal> getBetween(LocalDateTime startDate, LocalDateTime endDate, int userId) {
-        return null;
+        return em.createNamedQuery(UserMeal.ALL_BETWEEN, UserMeal.class).setParameter("userId", userId)
+                .setParameter("startDate", startDate).setParameter("endDate", endDate).getResultList();
+
     }
 }
