@@ -16,8 +16,8 @@ public class UserAdminMockTest {
 
     @BeforeClass
     public static void beforeClass() {
-        //appCtx = new ClassPathXmlApplicationContext("spring/spring-app.xml", "spring/mock.xml");
-        appCtx = new ClassPathXmlApplicationContext("spring/spring-app.xml","spring/spring-db.xml");
+        appCtx = new ClassPathXmlApplicationContext("spring/spring-app.xml", "spring/mock.xml");
+        //appCtx = new ClassPathXmlApplicationContext("spring/spring-app.xml","spring/spring-db.xml");
         System.out.println("\n" + Arrays.toString(appCtx.getBeanDefinitionNames()) + "\n");
         controller = appCtx.getBean(AdminUserRestController.class);
     }
@@ -27,7 +27,7 @@ public class UserAdminMockTest {
         appCtx.close();
     }
 
-    @Test(expected = NotFoundException.class)
+    @Test
     public void testDelete() throws Exception {
         controller.delete(7);
     }
