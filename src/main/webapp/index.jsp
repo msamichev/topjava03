@@ -1,3 +1,4 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -5,7 +6,7 @@
     <title>Top Java.</title>
 </head>
 <body>
-<h2>Приложение вебинара "<a href="http://javawebinar.ru/topjava/" target="_blank">Top Java."</a></h2>
+<h2>Приложение вебинара  "<a href="http://javawebinar.ru/topjava/" target="_blank">Top Java."</a></h2>
 <ul>
 <li><a href="users">User list</a></li>
 <li><a href="meals">Meal list</a></li>

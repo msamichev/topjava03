@@ -6,7 +6,7 @@
 <body>
 <h2>Meal list</h2>
 <ul>
-    <li><a href="index.html">Main</a></li>
+    <li><a href="index.jsp">Main</a></li>
     <li><a href="users">User list</a></li>
 </ul>
 </body>
