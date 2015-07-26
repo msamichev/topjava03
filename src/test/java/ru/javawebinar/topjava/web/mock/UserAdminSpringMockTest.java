@@ -8,20 +8,19 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import ru.javawebinar.topjava.model.Role;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
-import ru.javawebinar.topjava.web.user.AdminUserRestController;
+import ru.javawebinar.topjava.web.user.AdminRestController;
 
 /**
  * GKislin
  * 13.03.2015.
  */
-@ContextConfiguration({"classpath:spring/spring-mvc.xml", "classpath:spring/spring-app.xml", "classpath:spring/mock" +
-        ".xml"})
+@ContextConfiguration({"classpath:spring/spring-mvc.xml", "classpath:spring/spring-app.xml", "classpath:spring/mock.xml"})
 //@ContextConfiguration({"classpath:spring/spring-app.xml", "classpath:spring/spring-db.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class UserAdminSpringMockTest {
 
     @Autowired
-    private AdminUserRestController controller;
+    private AdminRestController controller;
 
     @Test
     public void testCreate() throws Exception {
