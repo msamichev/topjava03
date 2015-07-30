@@ -8,6 +8,11 @@ function makeEditable() {
         deleteRow($(this).attr("id"));
     });
 
+    $('.active-status').click(function () {
+        changeActiveStatus($(this).attr("id"), $(this).is(':checked'));
+    });
+
+
     $('#detailsForm').submit(function () {
         save();
         return false;
@@ -15,6 +20,17 @@ function makeEditable() {
 
     $(document).ajaxError(function (event, jqXHR, options, jsExc) {
         failNoty(event, jqXHR, options, jsExc);
+    });
+}
+
+function changeActiveStatus(id, checked) {
+    $.ajax({
+        url: ajaxUrl + id + '/' + checked,
+        type: 'PUT',
+        success: function () {
+            updateTable();
+            successNoty('Changed');
+        }
     });
 }
 

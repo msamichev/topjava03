@@ -25,7 +25,7 @@
                     </datatables:column>
                     <datatables:column title="Roles" property="roles"/>
                     <datatables:column title="Active">
-                        <input type="checkbox"
+                        <input class="active-status" type="checkbox"
                                <c:if test="${user.enabled}">checked</c:if> id="${user.id}"/>
                     </datatables:column>
                     <datatables:column title="Registered">
