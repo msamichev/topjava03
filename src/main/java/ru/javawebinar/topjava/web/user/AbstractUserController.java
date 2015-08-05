@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import ru.javawebinar.topjava.LoggerWrapper;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.service.UserService;
+import ru.javawebinar.topjava.to.UserTo;
+import ru.javawebinar.topjava.util.UserUtil;
 
 import java.util.List;
 
@@ -27,8 +29,9 @@ public abstract class AbstractUserController {
     }
 
     public User create(User user) {
+        user.setId(null);
         LOG.info("create " + user);
-        return service.save(user);
+        return service.save(UserUtil.normalize(user));
     }
 
     public void delete(int id) {
@@ -37,13 +40,24 @@ public abstract class AbstractUserController {
     }
 
     public void update(User user, int id) {
-        LOG.info("update " + user);
         user.setId(id);
-        service.update(user);
+        LOG.info("update " + user);
+        service.update(UserUtil.normalize(user));
+    }
+
+    public void update(UserTo userTo, int id) {
+        userTo.setId(id);
+        LOG.info("update " + userTo);
+        service.update(userTo);
     }
 
     public User getByMail(String email) {
         LOG.info("getByEmail " + email);
         return service.getByEmail(email);
+    }
+
+    public void enable(int id, boolean enabled) {
+        LOG.info((enabled ? "enable " : "disable ") + id);
+        service.enable(id, enabled);
     }
 }
