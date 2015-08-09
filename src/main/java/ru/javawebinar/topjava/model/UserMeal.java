@@ -46,7 +46,7 @@ public class UserMeal extends BaseEntity{
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
-    @NotNull
+    //@NotNull
 //    http://stackoverflow.com/questions/9887242/using-postgresql-why-doesnt-hibernate-jpa-create-cascade-constraints/9925761#9925761
     private User user;
 
@@ -78,6 +78,18 @@ public class UserMeal extends BaseEntity{
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public void setDateTime(LocalDateTime dateTime) {
+        this.dateTime = dateTime;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setCalories(int calories) {
+        this.calories = calories;
     }
 
     @Override

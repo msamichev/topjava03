@@ -19,7 +19,7 @@ public class UserMealController {
 
     @RequestMapping(value = "/meals", method = RequestMethod.GET)
     public String mealList(Model model) {
-        model.addAttribute("mealList", service.getAll(LoggedUser.id()));
+        //model.addAttribute("mealList", service.getAll(LoggedUser.id()));
         return "mealList";
     }
 }

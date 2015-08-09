@@ -114,6 +114,14 @@ function renderDate(date, type, row) {
     return date;
 }
 
+function renderDateTime(date, type, row) {
+    if (type == 'display') {
+        var dateObject = new Date(date);
+        return '<span>' + date + '</span>';
+    }
+    return date;
+}
+
 function renderEmail(data, type, row) {
     if (type == 'display') {
         return '<a href="mailto:' + data + '">' + data + '</a>';
