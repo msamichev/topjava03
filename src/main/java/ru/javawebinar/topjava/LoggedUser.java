@@ -3,10 +3,10 @@ package ru.javawebinar.topjava;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import ru.javawebinar.topjava.model.BaseEntity;
 import ru.javawebinar.topjava.model.Role;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.to.UserTo;
+import ru.javawebinar.topjava.util.PasswordUtil;
 import ru.javawebinar.topjava.util.UserUtil;
 
 import java.io.Serializable;
@@ -21,14 +21,16 @@ import static java.util.Objects.requireNonNull;
  * Mock implementation
  */
 public class LoggedUser implements UserDetails, Serializable {
-    protected UserTo userTo;
+    protected final UserTo userTo;
     private final boolean enabled;
     private final Set<Role> roles;
+    private String encodedPassword;
 
     public LoggedUser(User user) {
         this.userTo = UserUtil.asTo(user);
         this.enabled = user.isEnabled();
         this.roles = user.getRoles();
+        this.encodedPassword = user.getPassword();
     }
 
     public static LoggedUser safeGet() {
@@ -46,9 +48,21 @@ public class LoggedUser implements UserDetails, Serializable {
         return user;
     }
 
+    public UserTo getUserTo() {
+        return userTo;
+    }
+
+    public UserTo update(UserTo updatedTo) {
+        userTo.setName(updatedTo.getName());
+        userTo.setEmail(updatedTo.getEmail());
+        String newPassword = updatedTo.getPassword();
+        userTo.setPassword(newPassword);
+        encodedPassword = PasswordUtil.encode(newPassword);
+        return userTo;
+    }
+
     public static int id() {
-//        return get().userTo.getId();
-        return BaseEntity.START_SEQ;
+        return get().userTo.getId();
     }
 
     @Override
@@ -58,7 +72,7 @@ public class LoggedUser implements UserDetails, Serializable {
 
     @Override
     public String getPassword() {
-        return userTo.getPassword();
+        return encodedPassword;
     }
 
     @Override
