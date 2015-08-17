@@ -1,5 +1,6 @@
 package ru.javawebinar.topjava.web;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -9,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.SessionStatus;
 import ru.javawebinar.topjava.LoggedUser;
+import ru.javawebinar.topjava.model.User;
+import ru.javawebinar.topjava.service.UserService;
 import ru.javawebinar.topjava.to.UserTo;
 import ru.javawebinar.topjava.util.UserUtil;
 import ru.javawebinar.topjava.web.user.AbstractUserController;
@@ -21,7 +24,10 @@ import javax.validation.Valid;
  */
 
 @Controller
-public class RootController extends AbstractUserController {
+public class RootController  {
+
+    @Autowired
+    private UserService service;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String root() {
@@ -61,7 +67,7 @@ public class RootController extends AbstractUserController {
             return "profile";
         } else {
             status.setComplete();
-            super.update(LoggedUser.get().update(userTo));
+            service.update(LoggedUser.get().update(userTo));
             return "redirect:meals";
         }
     }
@@ -80,7 +86,9 @@ public class RootController extends AbstractUserController {
             return "profile";
         } else {
             status.setComplete();
-            super.create(UserUtil.createFromTo(userTo));
+            User user = UserUtil.createFromTo(userTo);
+            user.setId(null);
+            service.save(UserUtil.normalize(user));
             return "redirect:login?message=app.registered";
         }
     }

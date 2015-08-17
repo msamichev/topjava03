@@ -17,7 +17,7 @@
                     <sec:authorize access="hasRole('ROLE_ADMIN')">
                         <a class="btn btn-info" role="button" href="users"><fmt:message key="users.title"/></a>
                     </sec:authorize>
-                    <a class="btn btn-info" role="button" href="${profile}">${userTo.name} profile</a>
+                    <a class="btn btn-info" role="button" href="profile">${userTo.name} profile</a>
                     <input type="submit" class="btn btn-primary" value="Logout">
                 </sec:authorize>
             </form:form>
