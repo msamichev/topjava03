@@ -25,12 +25,14 @@ public class LoggedUser implements UserDetails, Serializable {
     private final boolean enabled;
     private final Set<Role> roles;
     private String encodedPassword;
+    private int caloriesPerDay;
 
     public LoggedUser(User user) {
         this.userTo = UserUtil.asTo(user);
         this.enabled = user.isEnabled();
         this.roles = user.getRoles();
         this.encodedPassword = user.getPassword();
+        this.caloriesPerDay = user.getCaloriesPerDay();
     }
 
     public static LoggedUser safeGet() {
@@ -58,6 +60,7 @@ public class LoggedUser implements UserDetails, Serializable {
         String newPassword = updatedTo.getPassword();
         userTo.setPassword(newPassword);
         encodedPassword = PasswordUtil.encode(newPassword);
+        userTo.setCaloriesPerDay(updatedTo.getCaloriesPerDay());
         return userTo;
     }
 

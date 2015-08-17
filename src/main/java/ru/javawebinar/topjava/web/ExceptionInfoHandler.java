@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import ru.javawebinar.topjava.LoggerWrapper;
 import ru.javawebinar.topjava.util.exception.ErrorInfo;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
+import ru.javawebinar.topjava.util.exception.UnprocessableEntityException;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -33,6 +34,14 @@ public class ExceptionInfoHandler {
     @ResponseBody
     @Order(Ordered.HIGHEST_PRECEDENCE + 1)
     ErrorInfo conflict(HttpServletRequest req, DataIntegrityViolationException e) {
+        return LOG.getErrorInfo(req.getRequestURL(), e);
+    }
+
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    @ExceptionHandler(UnprocessableEntityException.class)
+    @ResponseBody
+    @Order(Ordered.HIGHEST_PRECEDENCE)
+    ErrorInfo handleError(HttpServletRequest req, UnprocessableEntityException e) {
         return LOG.getErrorInfo(req.getRequestURL(), e);
     }
 

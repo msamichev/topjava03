@@ -12,7 +12,8 @@ CREATE TABLE users
   email      VARCHAR NOT NULL,
   password   VARCHAR NOT NULL,
   registered TIMESTAMP DEFAULT now(),
-  enabled    BOOL DEFAULT TRUE
+  enabled    BOOL DEFAULT TRUE,
+  calories   INTEGER
 );
 CREATE UNIQUE INDEX unique_email ON USERS (email);
 

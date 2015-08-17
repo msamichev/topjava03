@@ -27,7 +27,7 @@ abstract public class AbstractUserServiceTest extends AbstractServiceTest {
 
     @Test
     public void testSave() throws Exception {
-        TestUser tu = new TestUser("New", "new@gmail.com", "newPass", Role.ROLE_USER);
+        TestUser tu = new TestUser("New", "new@gmail.com", "newPass", 2000, Role.ROLE_USER);
         User created = service.save(tu.asUser());
         tu.setId(created.getId());
         MATCHER.assertListEquals(Arrays.asList(ADMIN, tu, USER), service.getAll());
@@ -35,7 +35,7 @@ abstract public class AbstractUserServiceTest extends AbstractServiceTest {
 
     @Test(expected = DataAccessException.class)
     public void testDuplicateMailSave() throws Exception {
-        service.save(new TestUser("Duplicate", "user@yandex.ru", "newPass", Role.ROLE_USER).asUser());
+        service.save(new TestUser("Duplicate", "user@yandex.ru", "newPass", 2000, Role.ROLE_USER).asUser());
     }
 
     @Test
