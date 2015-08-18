@@ -14,7 +14,30 @@
     <div class="container">
         <div class="shadow">
             <h3><fmt:message key="meals.title"/></h3>
-
+            <form:form id="filter" charset="utf-8" class="form-horizontal" accept-charset="UTF-8"
+                  action="ajax/profile/meals/filter" method="post">
+                <div class="form-group">
+                    <label class="col-sm-2">From Date</label>
+                    <div class="col-sm-2"><input id="startDate" name="startDate" placeholder="Start Date"
+                                                 class="form-control date-picker" type="text" value=""></div>
+                    <label class="col-sm-2">To Date</label>
+                    <div class="col-sm-2"><input id="endDate" name="endDate" placeholder="End Date"
+                                                 class="form-control date-picker" type="text" value=""></div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2">From Time</label>
+                    <div class="col-sm-2"><input id="startTime" name="startTime" placeholder="Start Time"
+                                                 class="form-control time-picker" type="text" value=""></div>
+                    <label class="col-sm-2">To Time</label>
+                    <div class="col-sm-2"><input id="endTime" name="endTime" placeholder="End Time"
+                                                 class="form-control time-picker" type="text" value=""></div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-8">
+                        <button type="submit" class="btn btn-primary pull-right">Filter</button>
+                    </div>
+                </div>
+            </form:form>
             <c:set var="ajaxUrl" value="ajax/profile/meals/"/>
             <div class="view-box">
                 <a class="btn btn-sm btn-info" id="add">Add Meal</a>
@@ -25,7 +48,6 @@
                     <datatables:column title="Calories" filterable="false" property="calories"/>
                     <datatables:column sortable="false" renderFunction="renderUpdateBtn"/>
                     <datatables:column sortable="false" renderFunction="renderDeleteBtn"/>
-
                     <datatables:callback type="init" function="makeEditable"/>
                     <datatables:callback type="createdrow" function="updateCreatedRow"/>
                 </datatables:table>
@@ -86,21 +108,42 @@
     function init() {
         $('#dateTime').datetimepicker({
             format: 'Y-m-d H:i',
-            lang:'ru'
+            lang: 'ru'
         });
+        $('#startDate').datetimepicker({
+            timepicker: false,
+            format: 'Y-m-d',
+            lang: 'ru'
+        });
+        $('#endDate').datetimepicker({
+            timepicker: false,
+            format: 'Y-m-d',
+            lang: 'ru'
+        });
+        $('#startTime').datetimepicker({
+            datepicker: false,
+            format: 'H:i',
+            lang: 'ru'
+        });
+        $('#endTime').datetimepicker({
+            datepicker: false,
+            format: 'H:i',
+            lang: 'ru'
+        });
+
     }
 
     function updateCreatedRow(row, data, dataIndex) {
         $(row).css("color", data.exceed ? 'red' : 'green');
     }
 
-/*
-    function refresh() {
-        $.each($('td.exceed'), function (key, item) {
-            var cell = $(item);
-            cell.parent().css("color", cell.html() == 'true' ? 'red' : 'green');
-        });
-    }
-*/
+    /*
+     function refresh() {
+     $.each($('td.exceed'), function (key, item) {
+     var cell = $(item);
+     cell.parent().css("color", cell.html() == 'true' ? 'red' : 'green');
+     });
+     }
+     */
 </script>
 </html>

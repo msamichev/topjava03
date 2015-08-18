@@ -1,4 +1,5 @@
 var form;
+var formFilter;
 
 function makeEditable() {
     form = $('#detailsForm');
@@ -16,15 +17,24 @@ function makeEditable() {
         return false;
     });
 
+
+    formFilter = $('#filter');
+    formFilter.submit(function () {
+        filter();
+        return false;
+    });
+
+
     $(document).ajaxError(function (event, jqXHR, options, jsExc) {
         failNoty(event, jqXHR, options, jsExc);
     });
 
     var token = $("meta[name='_csrf']").attr("content");
     var header = $("meta[name='_csrf_header']").attr("content");
-    $(document).ajaxSend(function(e, xhr, options) {
+    $(document).ajaxSend(function (e, xhr, options) {
         xhr.setRequestHeader(header, token);
     });
+
     init();
 }
 
@@ -71,6 +81,14 @@ function updateTable() {
     });
 }
 
+function displayTable(data) {
+    oTable_datatable.fnClearTable();
+    $.each(data, function (key, item) {
+        oTable_datatable.fnAddData(item);
+    });
+    oTable_datatable.fnDraw();
+}
+
 function save() {
     $.ajax({
         type: "POST",
@@ -83,6 +101,18 @@ function save() {
         }
     });
 }
+
+function filter() {
+    $.ajax({
+        type: "POST",
+        url: formFilter.attr('action'),
+        data: formFilter.serialize(),
+        success: function (data) {
+            displayTable(data);
+        }
+    });
+}
+
 
 var failedNote;
 

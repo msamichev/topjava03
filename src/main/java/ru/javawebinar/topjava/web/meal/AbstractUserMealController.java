@@ -62,7 +62,8 @@ public class AbstractUserMealController extends ExceptionInfoHandler {
         return service.save(meal, userId);
     }
 
-    public List<UserMealWithExceed> getBetween(LocalDate startDate, LocalTime startTime, LocalDate endDate, LocalTime endTime) {
+    public List<UserMealWithExceed>   getBetween(LocalDate startDate, LocalTime startTime, LocalDate endDate,
+            LocalTime endTime) {
         int userId = LoggedUser.id();
         LOG.info("getBetween dates {} - {} for time {} - {} for User {}", startDate, endDate, startTime, endTime, userId);
         return UserMealsUtil.getFilteredWithExceeded(
