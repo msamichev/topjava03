@@ -19,10 +19,12 @@ function makeEditable() {
 
 
     formFilter = $('#filter');
-    formFilter.submit(function () {
-        filter();
-        return false;
-    });
+    if (formFilter != null) {
+        formFilter.submit(function () {
+            filter();
+            return false;
+        });
+    }
 
 
     $(document).ajaxError(function (event, jqXHR, options, jsExc) {
@@ -72,13 +74,17 @@ function enable(id, chkbox) {
 }
 
 function updateTable() {
-    $.get(ajaxUrl, function (data) {
-        oTable_datatable.fnClearTable();
-        $.each(data, function (key, item) {
-            oTable_datatable.fnAddData(item);
+    if (formFilter != null) {
+            filter();
+    } else {
+        $.get(ajaxUrl, function (data) {
+            oTable_datatable.fnClearTable();
+            $.each(data, function (key, item) {
+                oTable_datatable.fnAddData(item);
+            });
+            oTable_datatable.fnDraw();
         });
-        oTable_datatable.fnDraw();
-    });
+    }
 }
 
 function displayTable(data) {
