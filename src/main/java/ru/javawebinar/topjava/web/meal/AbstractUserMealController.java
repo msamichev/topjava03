@@ -7,7 +7,6 @@ import ru.javawebinar.topjava.model.UserMeal;
 import ru.javawebinar.topjava.service.UserMealService;
 import ru.javawebinar.topjava.to.UserMealWithExceed;
 import ru.javawebinar.topjava.util.UserMealsUtil;
-import ru.javawebinar.topjava.web.ExceptionInfoHandler;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -16,7 +15,7 @@ import java.util.List;
 /**
  * UserMeal: javawebinar.topjava
  */
-public class AbstractUserMealController extends ExceptionInfoHandler {
+public class AbstractUserMealController {
 //    public static final String APPLICATION_JSON_WITH_UTF8_VALUE = "application/json;charset=UTF-8";
 
     private static final LoggerWrapper LOG = LoggerWrapper.get(AbstractUserMealController.class);
@@ -39,7 +38,7 @@ public class AbstractUserMealController extends ExceptionInfoHandler {
     public List<UserMealWithExceed> getAll() {
         int userId = LoggedUser.id();
         LOG.info("getAll for User {}", userId);
-        return UserMealsUtil.getWithExceeded(service.getAll(userId), LoggedUser.getCaloriesPerDay());
+        return UserMealsUtil.getWithExceeded(service.getAll(userId), LoggedUser.get().getCaloriesPerDay());
     }
 
     public void deleteAll() {
@@ -66,7 +65,7 @@ public class AbstractUserMealController extends ExceptionInfoHandler {
         int userId = LoggedUser.id();
         LOG.info("getBetween dates {} - {} for time {} - {} for User {}", startDate, endDate, startTime, endTime, userId);
         return UserMealsUtil.getFilteredWithExceeded(
-                service.getBetweenDates(startDate, endDate, userId), startTime, endTime, LoggedUser.getCaloriesPerDay()
+                service.getBetweenDates(startDate, endDate, userId), startTime, endTime, LoggedUser.get().getCaloriesPerDay()
         );
     }
 }

@@ -1,8 +1,10 @@
 package ru.javawebinar.topjava.web;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.support.SessionStatus;
 import ru.javawebinar.topjava.LoggedUser;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.service.UserService;
+import ru.javawebinar.topjava.to.DateTimeFilter;
 import ru.javawebinar.topjava.to.UserTo;
 import ru.javawebinar.topjava.util.UserUtil;
 import ru.javawebinar.topjava.web.user.AbstractUserController;
@@ -24,7 +27,7 @@ import javax.validation.Valid;
  */
 
 @Controller
-public class RootController  {
+public class RootController extends AbstractUserController  {
 
     @Autowired
     private UserService service;
@@ -36,13 +39,14 @@ public class RootController  {
 
     //    @Secured("ROLE_ADMIN")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @RequestMapping(value = "/users", method = RequestMethod.GET)
+    @RequestMapping(value = "/users/list", method = RequestMethod.GET)
     public String userList() {
         return "userList";
     }
 
     @RequestMapping(value = "/meals", method = RequestMethod.GET)
-    public String mealList() {
+    public String mealList(Model model) {
+        model.addAttribute("filter", new DateTimeFilter());
         return "mealList";
     }
 
@@ -81,15 +85,17 @@ public class RootController  {
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public String saveRegister(@Valid UserTo userTo, BindingResult result, SessionStatus status, ModelMap model) {
-        if (result.hasErrors()) {
-            model.addAttribute("register", true);
-            return "profile";
-        } else {
-            status.setComplete();
-            User user = UserUtil.createFromTo(userTo);
-            user.setId(null);
-            service.save(UserUtil.normalize(user));
-            return "redirect:login?message=app.registered";
+        if (!result.hasErrors()) {
+            try {
+                super.create(UserUtil.createFromTo(userTo));
+                status.setComplete();
+                return "redirect:login?message=app.registered";
+            } catch (DataIntegrityViolationException ex) {
+                result.rejectValue("email", "error.user", "User with this email already present in application.");
+            }
         }
+        status.setComplete();
+        model.addAttribute("register", true);
+        return "profile";
     }
 }

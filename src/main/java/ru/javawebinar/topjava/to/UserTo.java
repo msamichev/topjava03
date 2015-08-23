@@ -4,18 +4,20 @@ import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 
-public class UserTo {
+public class UserTo implements Serializable {
     protected int id;
 
     public UserTo() {
     }
 
-    public UserTo(int id, String name, String email, String password) {
+    public UserTo(int id, String name, String email, String password, int caloriesPerDay) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.password = password;
+        this.caloriesPerDay = caloriesPerDay;
     }
 
     @NotEmpty
@@ -27,6 +29,8 @@ public class UserTo {
 
     @Size(min = 5, max = 15, message = " must between 5 and 15 characters")
     protected String password;
+
+    protected int caloriesPerDay = 2000;
 
     public void setId(int id) {
         this.id = id;
@@ -64,12 +68,21 @@ public class UserTo {
         return email;
     }
 
+    public int getCaloriesPerDay() {
+        return caloriesPerDay;
+    }
+
+    public void setCaloriesPerDay(int caloriesPerDay) {
+        this.caloriesPerDay = caloriesPerDay;
+    }
+
     @Override
     public String toString() {
         return "UserTo{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
+                ", caloriesPerDay='" + caloriesPerDay + '\'' +
                 '}';
     }
 }

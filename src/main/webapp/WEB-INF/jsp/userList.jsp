@@ -15,7 +15,7 @@
         <div class="shadow">
             <h3><fmt:message key="users.title"/></h3>
 
-            <c:set var="ajaxUrl" value="ajax/admin/users/"/>
+            <c:url var="ajaxUrl" value="/ajax/admin/users/"/>
             <div class="view-box">
                 <a class="btn btn-sm btn-info" id="add">Add User</a>
 
@@ -88,6 +88,12 @@
     var ajaxUrl = '${ajaxUrl}';
 
     function init(){
+    }
+
+    function updateTable() {
+        $.get(ajaxUrl, function (data) {
+            updateTableWithData(data);
+        });
     }
 
     function updateCreatedRow(row, data, dataIndex) {
